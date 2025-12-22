@@ -24,6 +24,21 @@ export default function MoviesGrid() {
   const machesSearchTerm = (movie) => {
     return movie.title.toLowerCase().includes(searchTerm.toLowerCase());
   };
+
+  const matchesRating = (movie, rating) => {
+    switch (rating) {
+      case "All":
+        return true;
+      case "Good":
+        return movie.rating >= 8;
+      case "Ok":
+        return movie.rating >= 5 && movie.rating < 8;
+      case "Bad":
+        return movie.rating < 5;
+      default:
+        return false;
+    }
+  };
   const handleSearchChange = (evnt) => {
     setSearchTerm(evnt.target.value);
   };
@@ -37,7 +52,11 @@ export default function MoviesGrid() {
   };
 
   const filteredMovies = movies.filter((movie) => {
-    return matchesGenre(genre, movie) && machesSearchTerm(movie);
+    return (
+      matchesGenre(genre, movie) &&
+      matchesRating(movie, rating) &&
+      machesSearchTerm(movie)
+    );
   });
 
   return (
@@ -74,7 +93,7 @@ export default function MoviesGrid() {
             >
               <option>All</option>
               <option>Good</option>
-              <option>OK</option>
+              <option>Ok</option>
               <option>Bad</option>
             </select>
           </label>
