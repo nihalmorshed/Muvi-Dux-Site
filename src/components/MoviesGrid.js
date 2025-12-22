@@ -15,6 +15,15 @@ export default function MoviesGrid() {
       .then((data) => setMovies(data));
   }, []);
 
+  const matchesGenre = (genre, movie) => {
+    return (
+      genre === "All Genre" || movie.genre.toLowerCase() === genre.toLowerCase()
+    );
+  };
+
+  const machesSearchTerm = (movie) => {
+    return movie.title.toLowerCase().includes(searchTerm.toLowerCase());
+  };
   const handleSearchChange = (evnt) => {
     setSearchTerm(evnt.target.value);
   };
@@ -28,7 +37,7 @@ export default function MoviesGrid() {
   };
 
   const filteredMovies = movies.filter((movie) => {
-    return movie.title.toLowerCase().includes(searchTerm.toLowerCase());
+    return matchesGenre(genre, movie) && machesSearchTerm(movie);
   });
 
   return (
@@ -80,7 +89,7 @@ export default function MoviesGrid() {
   );
 }
 
-// Search Logic Explaination
+// Search Logic Explanation
 // - 'onChange' fires → "handleSearchChange" runs.
 // - That updates "searchTerm" with the typed text.
 // - Because the input’s value is tied to "searchTerm", the typed text immediately appears in the box.
