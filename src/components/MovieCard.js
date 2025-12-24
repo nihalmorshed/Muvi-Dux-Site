@@ -1,4 +1,3 @@
-import React from "react";
 import "../styles.css";
 
 export default function MovieCard({ movie, toggleWatchlist, isWatchlisted }) {
@@ -17,7 +16,7 @@ export default function MovieCard({ movie, toggleWatchlist, isWatchlisted }) {
   };
 
   return (
-    <div key={MovieCard.id} className="movie-card">
+    <div key={movie.id} className="movie-card">
       <img
         src={`images/${movie.image}`}
         alt={movie.title}
