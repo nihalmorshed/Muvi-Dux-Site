@@ -8,12 +8,27 @@ import Watchlist from "./components/Watchlist";
 import { useEffect, useState } from "react";
 function App() {
   const [movies, setMovies] = useState([]);
+  const [watchlist, setWatchlist] = useState([]); // watchlist is an array of movieIds
 
   useEffect(() => {
     fetch("movies.json")
       .then((resp) => resp.json())
       .then((data) => setMovies(data));
   }, []);
+
+  const toggleWatchlist = (movieId) => {
+    setWatchlist((prev) => {
+      // "prev" represents the previous value of the watchlist
+      return prev.includes(movieId)
+        ? prev.filter((id) => id !== movieId)
+        : [...prev, movieId]; // state in react is immutable ; must be changed using spread operator
+    });
+
+    // prev = watchlist = [101, 102, 103]; // movie IDs
+    // toggleWatchlist(102);
+    // prev.includes(102) → true
+    // runs prev.filter((id) => id != 102) -> Result: [101, 103]
+  };
   return (
     <div className="App">
       <div className="container">
@@ -31,8 +46,26 @@ function App() {
           </nav>
 
           <Routes>
-            <Route path="/" element={<MoviesGrid movies={movies} />}></Route>
-            <Route path="/watchlist" element={<Watchlist />}></Route>
+            <Route
+              path="/"
+              element={
+                <MoviesGrid
+                  movies={movies}
+                  watchlist={watchlist}
+                  toggleWatchlist={toggleWatchlist}
+                />
+              }
+            ></Route>
+            <Route
+              path="/watchlist"
+              element={
+                <Watchlist
+                  movies={movies}
+                  watchlist={watchlist}
+                  toggleWatchlist={toggleWatchlist}
+                />
+              }
+            ></Route>
           </Routes>
         </Router>
       </div>
